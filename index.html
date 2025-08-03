@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adi Mega Gallery</title>
+  <meta name="theme-color" content="#6200ee" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-512.png" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Roboto", sans-serif;
+      background: #f7f7f7;
+      color: #212121;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      background: #6200ee;
+      color: white;
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.4rem;
+      text-align: center;
+      font-weight: bold;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 99;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+      width: 100%;
+      max-width: 1400px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    footer {
+      padding: 1rem;
+      color: #777;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>📸 Adi Mega Gallery (1–1000 Images)</header>
+  <div class="grid" id="gallery"></div>
+  <footer>Built by 11yeargoat 💜</footer>
+
+  <script>
+    const extensions = [".jpg", ".jpeg", ".png"];
+    const gallery = document.getElementById("gallery");
+
+    for (let i = 1; i <= 1000; i++) {
+      let found = false;
+      for (let ext of extensions) {
+        const img = new Image();
+        img.src = `${i}${ext}`;
+        img.onload = () => {
+          if (!found) {
+            const card = document.createElement("div");
+            card.className = "card";
+            const imgEl = document.createElement("img");
+            imgEl.src = img.src;
+            imgEl.alt = `Image ${i}`;
+            card.appendChild(imgEl);
+            gallery.appendChild(card);
+            found = true;
+          }
+        };
+      }
+    }
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js").then(() => {
+        console.log("✅ Service Worker registered");
+      });
+    }
+  </script>
+</body>
+</html>
